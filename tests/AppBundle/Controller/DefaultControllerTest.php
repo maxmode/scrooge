@@ -11,8 +11,19 @@ class DefaultControllerTest extends WebTestCase
         $client = static::createClient();
         $client->followRedirects(true);
 
-        $client->request('GET', '/admin');
+        $client->request('GET', '/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
+        $client->request('GET', '/admin/app/treasuretype/list');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $client->request('GET', '/admin/app/treasuretype/create');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $client->request('GET', '/admin/app/transaction/list');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $client->request('GET', '/admin/app/transaction/create');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }

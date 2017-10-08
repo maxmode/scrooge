@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TreasureType
@@ -32,6 +33,9 @@ class TreasureType
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, unique=true)
+     *
+     * @Assert\Length(max = "255")
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -39,6 +43,8 @@ class TreasureType
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     *
+     * @Assert\Length(max = "10000")
      */
     private $description;
 
@@ -46,9 +52,17 @@ class TreasureType
      * @var string
      *
      * @ORM\Column(name="valueOfOne", type="decimal", precision=10, scale=2)
+     *
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type = "numeric")
      */
     private $valueOfOne;
 
+    /**
+     * @var int
+     */
+    private $totalCount;
 
     /**
      * Get id
@@ -167,10 +181,45 @@ class TreasureType
     /**
      * Get transactions
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|\AppBundle\Entity\Transaction[]
      */
     public function getTransactions()
     {
         return $this->transactions;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalCount()
+    {
+        if ($this->totalCount === null) {
+            $totalCount = 0;
+            foreach ($this->getTransactions() as $transaction) {
+                if ($transaction->getTransactionType() == Transaction::TYPE_DEBIT) {
+                    $totalCount -= $transaction->getAmount();
+                } else {
+                    $totalCount += $transaction->getAmount();
+                }
+            }
+            $this->totalCount = $totalCount;
+        }
+        return $this->totalCount;
+    }
+
+    /**
+     * @param int $totalCount
+     */
+    public function setTotalCount($totalCount)
+    {
+        $this->totalCount = $totalCount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalValue()
+    {
+        return $this->getTotalCount() * $this->getValueOfOne();
     }
 }

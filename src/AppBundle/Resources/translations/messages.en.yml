@@ -1,0 +1,31 @@
+app:
+    transaction:
+        form:
+            amount: 'Amount of items'
+            comment: Comment
+            date: Date
+            transactionType: Operation
+            treasureType: Treasure
+
+        list:
+            amount: 'Amount of items'
+            date: Date
+            id: 'Transaction #'
+            transactionType: Operation
+            treasureType: Treasure
+
+        type:
+            credit: CREDIT
+            debit: DEBIT
+
+    treasure_type:
+        form:
+            description: Description
+            title: Treasure
+            valueOfOne: 'Value of one item, USD'
+
+        list:
+            title: Treasure
+            totalCount: 'Item count'
+            totalValue: 'Total value, USD'
+            valueOfOne: 'Value of one item, USD'

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Transaction
@@ -12,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Transaction
 {
+    const TYPE_DEBIT = 1;
+    const TYPE_CREDIT = 2;
+
     /**
      * @var int
      *
@@ -26,6 +30,8 @@ class Transaction
      *
      * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\TreasureType", inversedBy="transactions")
      * @ORM\JoinColumn(name="treasureTypeId", referencedColumnName="id")
+     *
+     * @Assert\NotBlank()
      */
     private $treasureType;
 
@@ -33,6 +39,9 @@ class Transaction
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date")
+     *
+     * @Assert\NotBlank()
+     * @Assert\LessThanOrEqual("today")
      */
     private $date;
 
@@ -40,6 +49,10 @@ class Transaction
      * @var int
      *
      * @ORM\Column(name="amount", type="integer")
+     *
+     * @Assert\Type(type = "integer")
+     * @Assert\GreaterThan(value = 0)
+     * @Assert\NotBlank()
      */
     private $amount;
 
@@ -47,6 +60,8 @@ class Transaction
      * @var int
      *
      * @ORM\Column(name="transactionType", type="integer")
+     *
+     * @Assert\NotBlank()
      */
     private $transactionType;
 
@@ -54,6 +69,8 @@ class Transaction
      * @var string
      *
      * @ORM\Column(name="comment", type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(max = "255")
      */
     private $comment;
 
@@ -185,5 +202,33 @@ class Transaction
     public function getTreasureType()
     {
         return $this->treasureType;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTransactionTypeNames()
+    {
+        return [
+            static::TYPE_CREDIT => 'app.transaction.type.credit',
+            static::TYPE_DEBIT => 'app.transaction.type.debit',
+        ];
+    }
+
+    /**
+     * @return bool
+     *
+     * @Assert\IsTrue(message = "app.transaction.error.not_enough_founds")
+     */
+    public function isEnoughForAmmountForTransaction()
+    {
+        if (!$this->getId()
+            && $this->getTransactionType() == static::TYPE_DEBIT
+            && $this->getAmount() > $this->getTreasureType()->getTotalCount()
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

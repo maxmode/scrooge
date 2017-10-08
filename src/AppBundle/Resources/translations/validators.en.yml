@@ -1,0 +1,4 @@
+app:
+    transaction:
+        error:
+            not_enough_founds: 'Not enough founds for this transaction'
