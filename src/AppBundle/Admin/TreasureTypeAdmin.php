@@ -3,8 +3,10 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 
 /**
  * Class TreasureTypeAdmin
@@ -82,5 +84,36 @@ class TreasureTypeAdmin extends AbstractAdmin
             $this->trans('app.treasure_type.list.valueOfOne') => 'valueOfOne',
             $this->trans('app.treasure_type.list.totalValue') => 'totalValue',
         ];
+    }
+
+    /**
+     * @param MenuItemInterface   $menu
+     * @param string              $action
+     * @param AdminInterface|null $childAdmin
+     *
+     * @return null
+     */
+    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        if (!$childAdmin && !in_array($action, array('edit', 'show'))) {
+            return;
+        }
+
+        $admin = $this->isChild() ? $this->getParent() : $this;
+        $id = $admin->getRequest()->get('id');
+
+        if ($this->isGranted('EDIT')) {
+            $menu->addChild('app.treasure_type.menu.treasure_type', [
+                'uri' => $admin->generateUrl('edit', array('id' => $id))
+            ]);
+        }
+
+        if ($this->isGranted('LIST')) {
+            $menu->addChild('app.treasure_type.menu.transactions', array(
+                'uri' => $admin->generateUrl('app.admin.transaction.list', ['id' => $id]),
+            ));
+        }
+
+        return;
     }
 }

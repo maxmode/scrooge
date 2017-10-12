@@ -37,6 +37,11 @@ class TransactionAdmin extends AbstractAdmin
     protected $maxPerPage = 25;
 
     /**
+     * @var string
+     */
+    protected $parentAssociationMapping = 'treasureType';
+
+    /**
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper)
@@ -48,11 +53,13 @@ class TransactionAdmin extends AbstractAdmin
             'dp_max_date' => $today->format('Y-m-d'),
             'format' => 'yyyy-MM-dd',
         ]);
-        $formMapper->add('treasureType', 'entity', [
-            'class' => TreasureType::class,
-            'label' => 'app.transaction.form.treasureType',
-            'choice_label' => 'title',
-        ]);
+        if (!$this->isChild()) {
+            $formMapper->add('treasureType', 'entity', [
+                'class' => TreasureType::class,
+                'label' => 'app.transaction.form.treasureType',
+                'choice_label' => 'title',
+            ]);
+        }
         $formMapper->add('transactionType', 'choice', [
             'choices' => array_combine(
                 Transaction::getTransactionTypeNames(),

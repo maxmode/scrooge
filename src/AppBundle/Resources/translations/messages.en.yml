@@ -19,6 +19,10 @@ app:
             debit: DEBIT
 
     treasure_type:
+        menu:
+            treasure_type: "Treasure details"
+            transactions: "Transactions"
+
         form:
             description: Description
             title: Treasure

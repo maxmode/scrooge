@@ -15,7 +15,7 @@ By default should be displayed 25 items per page
 
 5. Default value for date - today. It should be a datepicker.
 
-   b.   Side menu admin
+6. Side menu admin. List of transactions should be available from Treasure detail page.
    
    e.	Fix breadcrumbs
    f.	Column width in list view
