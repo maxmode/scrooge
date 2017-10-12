@@ -17,9 +17,20 @@ class TreasureTypeAdmin extends AbstractAdmin
      */
     protected $datagridValues = [
         '_page'       => 1,
+        '_per_page' => 25,
         '_sort_order' => 'DESC',
         '_sort_by' => 'totalValue',
     ];
+
+    /**
+     * @var array
+     */
+    protected $perPageOptions = [10, 25, 100, 500 ];
+
+    /**
+     * @var int
+     */
+    protected $maxPerPage = 25;
 
     /**
      * @param FormMapper $formMapper
@@ -58,5 +69,18 @@ class TreasureTypeAdmin extends AbstractAdmin
         $listMapper->add('totalValue', null, [
             'label' => 'app.treasure_type.list.totalValue',
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getExportFields()
+    {
+        return [
+            $this->trans('app.treasure_type.list.title') => 'title',
+            $this->trans('app.treasure_type.list.totalCount') => 'totalCount',
+            $this->trans('app.treasure_type.list.valueOfOne') => 'valueOfOne',
+            $this->trans('app.treasure_type.list.totalValue') => 'totalValue',
+        ];
     }
 }

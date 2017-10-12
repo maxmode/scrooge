@@ -231,4 +231,16 @@ class Transaction
 
         return true;
     }
+
+    /**
+     * @return string
+     */
+    public function getTransactionTypeCode()
+    {
+        if ($this->getTransactionType() == static::TYPE_CREDIT) {
+            return 'CREDIT';
+        } else {
+            return 'DEBIT';
+        }
+    }
 }

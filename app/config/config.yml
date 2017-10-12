@@ -37,6 +37,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -78,3 +80,6 @@ sonata_block:
 sonata_admin:
     title:      Acme
     title_logo: bundles/app/images/fancy_acme_logo.png
+    show_mosaic_button:   false
+    templates:
+        layout: SonataAdminBundle::standard_layout.html.twig
