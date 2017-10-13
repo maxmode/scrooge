@@ -14,25 +14,24 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
  */
 class TreasureTypeAdmin extends AbstractAdmin
 {
-    /**
-     * @var array
-     */
-    protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page' => 25,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'totalValue',
-    ];
 
     /**
-     * @var array
+     * @return string
      */
-    protected $perPageOptions = [10, 25, 100, 500 ];
+    public function configure()
+    {
+        $this->classnameLabel = $this->trans('app.treasure_type.title');
+        $this->maxPerPage = 25;
+        $this->perPageOptions = [10, 25, 100, 500 ];
+        $this->datagridValues = [
+            '_page'       => 1,
+            '_per_page' => 25,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'totalValue',
+        ];
 
-    /**
-     * @var int
-     */
-    protected $maxPerPage = 25;
+        return;
+    }
 
     /**
      * @param FormMapper $formMapper
@@ -41,6 +40,9 @@ class TreasureTypeAdmin extends AbstractAdmin
     {
         $formMapper->add('title', null, [
             'label' => 'app.treasure_type.form.title',
+        ]);
+        $formMapper->add('pictureUrl', null, [
+            'label' => 'app.treasure_type.form.pictureUrl',
         ]);
         $formMapper->add('description', 'textarea', [
             'label' => 'app.treasure_type.form.description',
@@ -61,15 +63,22 @@ class TreasureTypeAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('title', null, [
             'label' => 'app.treasure_type.list.title',
+            'header_style' => 'width: 40%',
+            'template' => 'AppBundle:treasureType:list_title.html.twig',
         ]);
         $listMapper->add('totalCount', null, [
             'label' => 'app.treasure_type.list.totalCount',
+            'header_style' => 'width: 20%',
         ]);
         $listMapper->add('valueOfOne', null, [
             'label' => 'app.treasure_type.list.valueOfOne',
+            'header_style' => 'width: 20%',
+            'template' => 'AppBundle:treasureType:money.html.twig',
         ]);
         $listMapper->add('totalValue', null, [
             'label' => 'app.treasure_type.list.totalValue',
+            'header_style' => 'width: 20%',
+            'template' => 'AppBundle:treasureType:money.html.twig',
         ]);
     }
 

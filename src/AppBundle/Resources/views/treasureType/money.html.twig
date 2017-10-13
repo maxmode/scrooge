@@ -1,0 +1,5 @@
+{% extends 'SonataAdminBundle:CRUD:list_string.html.twig' %}
+
+{% block field %}
+    ${{ value|number_format(2, '.', ',') }}
+{% endblock %}

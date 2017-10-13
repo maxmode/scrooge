@@ -65,6 +65,17 @@ class TreasureType
     private $totalCount;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="pictureUrl", type="string", length=500, unique=false)
+     *
+     * @Assert\Length(max = "500")
+     * @Assert\NotBlank()
+     * @Assert\Url()
+     */
+    private $pictureUrl;
+
+    /**
      * Get id
      *
      * @return int
@@ -221,5 +232,29 @@ class TreasureType
     public function getTotalValue()
     {
         return $this->getTotalCount() * $this->getValueOfOne();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPictureUrl()
+    {
+        return $this->pictureUrl;
+    }
+
+    /**
+     * @param string $pictureUrl
+     */
+    public function setPictureUrl($pictureUrl)
+    {
+        $this->pictureUrl = $pictureUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getTitle();
     }
 }

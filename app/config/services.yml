@@ -26,7 +26,11 @@ services:
         class: AppBundle\Admin\TreasureTypeAdmin
         arguments: [~, AppBundle\Entity\TreasureType, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: TreasureType }
+            - name: sonata.admin
+              manager_type: orm
+              label: "app.treasure_type.title"
+              group: "app.dashboard.group_storage"
+              label_catalogue: messages
         public: true
         calls:
             - method: addChild
@@ -37,5 +41,9 @@ services:
         class: AppBundle\Admin\TransactionAdmin
         arguments: [~, AppBundle\Entity\Transaction, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Transaction }
+            - name: sonata.admin
+              manager_type: orm
+              label: "app.transaction.title"
+              group: "app.dashboard.group_storage"
+              label_catalogue: messages
         public: true

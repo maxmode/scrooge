@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:list_string.html.twig' %}
+
+{% block field %}
+    <div style="text-align: center;">
+        <img src="{{ object.pictureUrl }}" alt="{{ object.title }}" style="width: 80px;">
+        <br>
+        {{ object.title }}
+    </div>
+{% endblock %}

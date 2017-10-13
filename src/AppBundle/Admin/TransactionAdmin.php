@@ -7,6 +7,7 @@ use AppBundle\Entity\TreasureType;
 use Exporter\Source\DoctrineORMQuerySourceIterator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
@@ -17,29 +18,23 @@ use Sonata\AdminBundle\Form\FormMapper;
 class TransactionAdmin extends AbstractAdmin
 {
     /**
-     * @var array
+     * @return string
      */
-    protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page' => 25,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'date',
-    ];
+    public function configure()
+    {
+        $this->classnameLabel = $this->trans('app.transaction.title');
+        $this->parentAssociationMapping = 'treasureType';
+        $this->maxPerPage = 25;
+        $this->perPageOptions = [10, 25, 100, 500 ];
+        $this->datagridValues = [
+            '_page'       => 1,
+            '_per_page' => 25,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'date',
+        ];
 
-    /**
-     * @var array
-     */
-    protected $perPageOptions = [10, 25, 100, 500 ];
-
-    /**
-     * @var int
-     */
-    protected $maxPerPage = 25;
-
-    /**
-     * @var string
-     */
-    protected $parentAssociationMapping = 'treasureType';
+        return;
+    }
 
     /**
      * @param FormMapper $formMapper
@@ -99,7 +94,7 @@ class TransactionAdmin extends AbstractAdmin
         $listMapper->add('amount', null, [
             'label' => 'app.transaction.list.amount',
         ]);
-        $listMapper->add('treasureType.title', null, [
+        $listMapper->add('treasureType', null, [
             'label' => 'app.transaction.list.treasureType',
         ]);
     }
@@ -127,5 +122,33 @@ class TransactionAdmin extends AbstractAdmin
         $iterator = parent::getDataSourceIterator();
         $iterator->setDateTimeFormat('Y-m-d');
         return $iterator;
+    }
+
+    /**
+     * @param DatagridMapper $filter
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter->add('date', 'doctrine_orm_date_range',  array(
+                'label' => 'app.transaction.list.date',
+                'field_type'=>'sonata_type_date_range_picker',
+            )
+        );
+        $filter->add('transactionType', 'doctrine_orm_choice',  [
+                'label' => 'app.transaction.list.transactionType',
+            ], 'choice', [
+                'choices' => array_combine(
+                    Transaction::getTransactionTypeNames(),
+                    array_keys(Transaction::getTransactionTypeNames())
+                ),
+            ]
+        );
+        $filter->add('treasureType', 'doctrine_orm_choice',  [
+            'label' => 'app.transaction.list.treasureType',
+        ], 'entity', [
+                'class' => TreasureType::class,
+                'choice_label' => 'title',
+            ]
+        );
     }
 }

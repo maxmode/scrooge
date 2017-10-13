@@ -78,7 +78,7 @@ sonata_block:
             contexts:   [admin]
 
 sonata_admin:
-    title:      Acme
+    title:      Scrooge
     title_logo: bundles/app/images/fancy_acme_logo.png
     show_mosaic_button:   false
     templates:

@@ -13,18 +13,27 @@ By default should be displayed 25 items per page
 
 4. Date format in listview and export: yyyy-mm-dd.
 
-5. Default value for date - today. It should be a datepicker.
+5. Fix Date field.
+Default value for date - today.
+It should be a datepicker.
 
-6. Side menu admin. List of transactions should be available from Treasure detail page.
-   
-   e.	Fix breadcrumbs
-   f.	Column width in list view
-   g.	Custom list field in TreasureType
-   h.	Add validation to entities
-   i.	Translate everything
-   j.	Introduce date picker for Date fields.
-   k.	Custom templates for some fields in CRUDS
-   l.	Create new treasure types inline.
-   m.	Change templates - add images of Scrooge’s bank
-   n.   Rename project
-   g.   add useful filters
+6. Side menu admin.
+List of transactions should be available from Treasure detail page.
+
+7.	Fix breadcrumbs.
+On edit page breadcrumbs show weird characters.
+Also titles in breadcrumbs should be translated.
+
+8. Column width in list view for Treasure Type.
+Columns should have widths: 40%, 20%, 20%, 20%
+
+9. Rename project and fix translations on Dashboard.
+
+10. New requirement.
+We need new mandatory field "Picture URL" for Treasure Type.
+On the overview it should be displayed in column together with title.
+
+11. Add useful filters for Transaction list:
+Date range, operation type, treasure type
+
+12. Format for money everywhere: $10,000,000.00

@@ -243,4 +243,12 @@ class Transaction
             return 'DEBIT';
         }
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getId();
+    }
 }
